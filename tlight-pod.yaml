@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tlight
+spec:
+  containers:
+  - name: tlight
+    image: docker.io/kennedye2112/rpi:tlight_1.0 # my pre-built container
+    env:
+      - name: GPIO_RED
+        value: "19"
+      - name: GPIO_YELLOW
+        value: "13"
+      - name: GPIO_GREEN
+        value: "26"
+    securityContext:
+      privileged: true
+    lifecycle:
+      preStop:
+        exec:
+          command: ["/bin/sh","-c","kill -int 1"] # this lets the script call GPIO.cleanup()
